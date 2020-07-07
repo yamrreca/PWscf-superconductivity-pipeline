@@ -1,0 +1,9 @@
+old/
+__pycache__/
+*.in
+*.in.*
+*.ipynb
+*.out
+*.out.*
+changelog
+make_PWfile_obj_test.py
