@@ -1,0 +1,49 @@
+&CONTROL
+  calculation = 'scf',
+  prefix      = 'C6relax',
+  pseudo_dir  = './',
+  outdir      = './tmp',
+  tprnfor     = .TRUE.,
+  etot_conv_thr=1.d-5
+  dt=20.D0,
+  nstep = 2800,
+/
+&SYSTEM
+ ibrav = 0,
+ nat = 9,
+ ntyp = 3,
+ ecutwfc= 65.0,
+ ecutrho= 650, 
+ occupations = 'smearing',
+ smearing='methfessel-paxton',
+ degauss= 0.0001,
+/
+&ELECTRONS
+   diagonalization='david',
+    mixing_mode = 'plain',
+    mixing_beta = 0.7,
+    conv_thr =  1.0d-8,
+    electron_maxstep= 2000,
+/
+&IONS
+  pot_extrapolation = 'second_order',
+  wfc_extrapolation = 'second_order',
+/
+ATOMIC_SPECIES
+B  10.81      B.pbe-mt_fhi.UPF
+N  14.01      N.pbe-mt_fhi.UPF
+Li  6.94      Li.pbe-mt_fhi.UPF
+ATOMIC_POSITIONS (angstrom)
+B        1.439003412   2.492715526  -0.465252960
+N        0.719745027   1.246294914  -0.466062929
+B        1.439007387  -0.000151833  -0.465253006
+N        2.878070064   0.000187813  -0.466062690
+B        3.597890992   1.246283639  -0.465252977
+N        2.878066117   2.492405599  -0.466062939
+Li       2.158630334   1.246289550   3.593947501
+K_POINTS {automatic}
+ 40  40  1  0  0  0
+CELL_PARAMETERS (angstrom)
+   4.317264935   0.000003535   0.000000000
+   2.158626480   3.738864412   0.000000000
+   0.000000000   0.000000000  20.000000000

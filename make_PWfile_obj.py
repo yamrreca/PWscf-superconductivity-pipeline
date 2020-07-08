@@ -107,8 +107,6 @@ class PWfile:
         return contents
 
 
-
-
         
 def get_effective_block(block):
     """Returns its input without empty or commented lines.

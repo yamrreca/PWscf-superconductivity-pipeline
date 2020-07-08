@@ -99,7 +99,7 @@ def check_ibrav(file):
     """
 
     ibrav = file.ibrav
-    contents = file.contents
+    contents = file.reconstruct()
     
     if ibrav == 0:
         #Check for the existence of the CELL_PARAMETERS block
@@ -284,7 +284,7 @@ if __name__ == '__main__':
     print()
 
     ##Sixth: Print comments.
-    comments = get_comments(file.contents)
+    comments = get_comments(file.reconstruct())
     if comments == []:
         print('No commented lines')
     else:
