@@ -33,12 +33,12 @@ def relax_update(in_file, relax_out, output_file = 'pipe_out.1'):
 	return in_file
 
 
-def get_new_celldm(vc_relax, output_file = 'pipe_out.1'):
+def get_new_celldm(CELL_out, output_file = 'pipe_out.1'):
 	"""
 	Calculates the new celldm(1) and celldm(3) values from a vc-relax file. Only works if ibrav = 4.
 
 	Arguments:
-	-vc_relax: string. The contents of the .out file.
+	-CELL_out: string. The CELL_parameters block in the vc-relax output file.
 	-output_file: string. File to write output messages to.
 
 	Returns:
@@ -47,38 +47,31 @@ def get_new_celldm(vc_relax, output_file = 'pipe_out.1'):
 	"""	
 
 	##Defining a regex to extract the CELL_PARAMETERS block.
-	out_regex = re.compile(r'''\nBegin final coordinates.*\n(CELL_PARAMETERS.*)\n\nATOMIC_POSITIONS''',re.DOTALL)
-	match = out_regex.search(vc_relax)
-	if match is None:
-		with open(output_file, 'a') as archivo:
-			archivo.write('Fatal: no final coordinates in vc-relax output.')
-			exit()
-	else:
-		##The only numbers that matter are the alat parameter,
-		##the value in the upper-left of the array,
-		##and the value in the lower-right of the array.
-		CELL_out = match.group(1)
+	
+	##The only numbers that matter are the alat parameter,
+	##the value in the upper-left of the array,
+	##and the value in the lower-right of the array.
 
-		##Extracting the rows
-		CELL_out_rows = CELL_out.split('\n')
+	##Extracting the rows
+	CELL_out_rows = CELL_out.split('\n')
 
-		##Extracting alat
-		alat = float(re.search(r'alat\s*=\s*(\d+\.\d+)',CELL_out_rows[0]).group(1))
+	##Extracting alat
+	alat = float(re.search(r'alat\s*=\s*(\d+\.\d+)',CELL_out_rows[0]).group(1))
 
-		##Extracting the first parameter of the array, corresponding
-		##to the change in the horizontal vector on the
-		##xy plane.
-		da = float(CELL_out_rows[1].split()[0])
+	##Extracting the first parameter of the array, corresponding
+	##to the change in the horizontal vector on the
+	##xy plane.
+	da = float(CELL_out_rows[1].split()[0])
 
-		##Extracting the last parameter in the array,
-		##corresponding to the change in the z vector.
-		dc = float(CELL_out_rows[3].split()[2])
+	##Extracting the last parameter in the array,
+	##corresponding to the change in the z vector.
+	dc = float(CELL_out_rows[3].split()[2])
 
-		##Calculating the new celldm params.
-		celldm1_new = da*alat
-		celldm3_new = dc/da
+	##Calculating the new celldm params.
+	celldm1_new = da*alat
+	celldm3_new = dc/da
 
-		return celldm1_new, celldm3_new
+	return celldm1_new, celldm3_new
 
 
 def update_celldm(pw_file, celldm1_new, celldm3_new, output_file = 'pipe_out.1'):
@@ -117,7 +110,7 @@ def update_celldm(pw_file, celldm1_new, celldm3_new, output_file = 'pipe_out.1')
 		celldm3_row_new = 'celldm(3) = %.11f'%(celldm3_new)
 
 		##Creating the new &SYSTEM namelist
-		new_SYSTEM = bf + '\n' + celldm1_row_new + '\n' + celldm3_row_new + '\n' + aft
+		new_SYSTEM = bf + '\n  ' + celldm1_row_new + '\n  ' + celldm3_row_new + '\n' + aft
 		pw_file.SYSTEM = new_SYSTEM
 
 	return pw_file
@@ -158,7 +151,7 @@ def vc_relax_update(in_file, vc_relax_out, output_file = 'pipe_out.1'):
 		in_file.ATOMIC_POSITIONS = ATOMIC_POSITIONS_new
 		
 		##Calculating new celldm
-		celldm1_new, celldm3_new = get_new_celldm(vc_relax, output_file = output_file)
+		celldm1_new, celldm3_new = get_new_celldm(CELL_PARAMETERS_new, output_file = output_file)
 		##Updating the celldm rows
 		in_file = update_celldm(in_file, celldm1_new, celldm3_new, output_file = output_file)
 
