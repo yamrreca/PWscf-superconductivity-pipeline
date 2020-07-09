@@ -173,10 +173,10 @@ if __name__ == '__main__':
 	if prev_calculation == 'relax':
 		in_file_new = relax_update(in_file, out_filename)
 	elif prev_calculation == 'vc-relax':
-		vc_relax_update(in_file, out_filename)
-	else:
+		in_file_new = vc_relax_update(in_file, out_filename)
+	else: ##If no optimization took place.
 		exit()
 
 	##Saving the updated file.
 	with open(in_file.filename + '-2', 'w') as archivo:
-		archivo.write(in_file.reconstruct())
+		archivo.write(in_file_new.reconstruct())
