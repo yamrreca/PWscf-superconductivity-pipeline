@@ -1,0 +1,2 @@
+#!/bin/bash
+echo "Echoing: Program 1 if you see this it ran correctly"

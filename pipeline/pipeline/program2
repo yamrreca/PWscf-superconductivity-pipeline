@@ -1,0 +1,3 @@
+#!/bin/bash
+echo "Programa 2. Corriendo ls:"
+ls | head -2

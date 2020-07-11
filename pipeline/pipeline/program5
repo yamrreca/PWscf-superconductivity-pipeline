@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "Programa 5. Cambiando de directorio a:"
+cd ..
+pwd

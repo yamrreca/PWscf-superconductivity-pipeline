@@ -1,0 +1,3 @@
+#!/bin/bash
+echo "Programa 4. PATH es:"
+echo $PATH

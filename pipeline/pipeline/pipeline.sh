@@ -4,7 +4,7 @@ row=0 #rows of the files array
 #Obtaining the necessary files
 while true; do
 	#Ask the user for the input file, the corresponding output file, and the script with the instruction to run.
-	echo -n "input-file output-file script-to-run > "
+	echo -n "script-to-run input-file output-file  > "
 	read file["$row,0"] file["$row,1] file["$row,2"]
 
 	##Ask the user if there are any more calculations to be made.
@@ -23,13 +23,14 @@ while true; do
 	fi
 done
 
+#Run all programs in order
 for i in {0..$NUM_ROWS}; do
-	in_file=file["$i,0"] #Input file for current iteration
+	in_file=file["$i,1"] #Input file for current iteration
 	if [[ "$i" != 0 ]]; then #If it isn't the first iteration
-		in_file_prev=file["$(($i - 1)),0"] #Input file for previous iteration
-		out_file_prev=file["$(($i - 1)),1"] #Corresponding output file
+		in_file_prev=file["$(($i - 1)),1"] #Input file for previous iteration
+		out_file_prev=file["$(($i - 1)),2"] #Corresponding output file
 	fi
-	script=file["$i,2"] #Script to be run in the current iteration
+	script=file["$i,0"] #Script to be run in the current iteration
 
 	##Update the coordinates and run the script if it is a PWscf file, otherwise
 	###just run. To determine if it is such a file, look for the ATOMIC_POSITIONS block
@@ -43,7 +44,7 @@ for i in {0..$NUM_ROWS}; do
 		$script
 	else
 		#update_parameters
-		update_coords $in_file $out_file_prev $in_file_prev
+		echo "Updating parameters"
 		#Run the script
 		$script
 	fi
