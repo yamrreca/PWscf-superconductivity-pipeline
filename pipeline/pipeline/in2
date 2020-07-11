@@ -1,1 +1,34 @@
-ATOMIC_POSITIONS
+&CONTROL
+  calculation = 'relax',
+  prefix      = 'MoS2',
+  restart_mode='from_scratch',
+  pseudo_dir  = './',
+  outdir      = './tmp',
+/
+&SYSTEM
+  ibrav=  4,
+  celldm(1)= 5.98166137972,
+  celldm(3)= 4.19267498281,
+  nat       = 3,
+  ntyp      = 2,
+  ecutwfc   = 65.0,
+  ecutrho= 550.0,
+  occupations = 'smearing',
+  smearing='methfessel-paxton',
+  degauss     =0.01D0,
+/
+&ELECTRONS
+    mixing_beta = 0.1, 
+    conv_thr =  1.0d-14,
+/
+&IONS
+/
+ATOMIC_SPECIES
+Mo   95.94   Mo.pz-n-nc.UPF
+S    32.065  S.pz-n-nc.UPF
+ATOMIC_POSITIONS (crystal)
+Mo       0.333333330   0.666666660   0.500000000
+S        0.666666660   0.333333330   0.380584378
+S        0.666666660   0.333333330   0.619415622
+K_POINTS {automatic}
+40  40  1  0.0  0.0  0.0

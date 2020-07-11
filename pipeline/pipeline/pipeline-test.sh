@@ -47,12 +47,11 @@ for (( i=0; i<$(($NUM_ENTRIES)); i+=3 )); do
 	if [[ "$i" -ne 0 ]]; then #If it isn't the first iteration
 		in_file_prev=${file[$(($i - 2))]} #Input file for previous iteration
 		out_file_prev=${file[$(($i - 1))]} #Corresponding output file
+		##Get the prev in file's calculation parameter to determine if updating the
+		##parameters of the current in file is necessary.
+		calculation=$( python3 get_calculation "$in_file_prev")
 	fi
 
-	##Update the coordinates and run the script if it is a PWscf file, otherwise
-	###just run. To determine if it is such a file, look for the ATOMIC_POSITIONS block
-	###for no reason other than the namelists have more generic names
-	###and I don't know if they may occur in other types of files.
 
 	echo "Iteration: $(($i/3))"
 	echo "Input file: $in_file"
@@ -60,18 +59,16 @@ for (( i=0; i<$(($NUM_ENTRIES)); i+=3 )); do
 	echo "Script: $script"
 	echo "Prev input file: $in_file_prev"
 	echo "Prev output file: $out_file_prev"
-	if [[ -n "$in_file_prev" ]]; then
-		ATOMIC_POSITIONS=$(grep "ATOMIC_POSITIONS" "$in_file_prev")
-	fi
-	echo "ATOMIC_POSITIONS: $ATOMIC_POSITIONS"
-	#Note that the above will also return an empty string if in_file_prev is empty
-	if [[ -z $ATOMIC_POSITIONS ]]; then #If it isn't PWscf
-		#Run the script
-		./$script
-	else
+	echo "Prev calculation: "$calculation""
+
+	if [[ "$calculation" == "relax" || "$calculation" == "vc-relax" ]]; then #If the prev file was optimization
 		#update_parameters
 		echo "Updating parameters"
 		#Run the script
+		./$script
+	else
+		#Run the script
+		echo "Not updating parameters"
 		./$script
 	fi
 

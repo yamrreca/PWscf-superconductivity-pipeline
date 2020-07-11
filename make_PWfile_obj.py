@@ -153,7 +153,7 @@ def get_namelists(file):
         CONTROL_flag = namelists[0].startswith('&CONTROL')
         SYSTEM_flag = namelists[1].startswith('&SYSTEM')
         ELECTRONS_flag = namelists[2].startswith('&ELECTRONS')
-    except IndexError: #If there aren't enough matches
+    except IndexError: #If there aren't enough regex matches
         print('Not a PWscf input file.')
         exit()
 

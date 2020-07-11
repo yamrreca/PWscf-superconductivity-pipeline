@@ -1,0 +1,18 @@
+phonons for MoS2crys
+ &inputph
+  tr2_ph=1.0d-20,
+  prefix= 'MoS2',
+  fildvscf='aldv',
+  amass(1)=95.94,
+  amass(2)=32.065,
+  outdir='./tmp',
+  fildyn='MoS2crys.dyn',
+  electron_phonon='interpolated',
+  el_ph_sigma=0.005,
+  el_ph_nsigma=10,
+  trans=.true.,
+  ldisp=.true.
+  nq1=10, nq2=10, nq3=1
+ /
+
+
