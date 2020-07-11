@@ -148,6 +148,19 @@ def get_namelists(file):
     ##Removing the / and newline at the end of each namelist
     namelists = [namelist[:-2] if namelist.endswith('/') else namelist[:-1] for namelist in namelists]
 
+    ##Quick check to ensure the file is PWscf input.
+    try:
+        CONTROL_flag = namelists[0].startswith('&CONTROL')
+        SYSTEM_flag = namelists[1].startswith('&SYSTEM')
+        ELECTRONS_flag = namelists[2].startswith('&ELECTRONS')
+    except IndexError: #If there aren't enough matches
+        print('Not a PWscf input file.')
+        exit()
+
+    if not (CONTROL_flag and SYSTEM_flag and ELECTRONS_flag):
+        print('Not a PWscf input file')
+        exit()
+
     return namelists
 
 
@@ -479,3 +492,12 @@ def make_PWfile_obj(filename):
             CELL_PARAMETERS = CELL_PARAMETERS)
 
     return pwfile
+
+
+if __name__ == '__main__':
+    from sys import argv
+    if len(argv) < 2:
+        print('Usage: check_PWfile [Path to file]')
+        exit()
+    else:
+        file = make_PWfile_obj(argv[1])
