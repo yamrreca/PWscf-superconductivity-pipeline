@@ -14,11 +14,11 @@ while true; do
 		echo -n "script-to-run input-file output-file  > "
 		read -a temp
 	done
-	file+=(${temp[@]})
+	files+=(${temp[@]})
 
-	echo "succesfully obtained ${file[$i]} ${file[$(($i + 1))]} ${file[$(($i + 2))]}"
+	echo "succesfully obtained ${files[$i]} ${files[$(($i + 1))]} ${files[$(($i + 2))]}"
 	if [[ $i -ne 0 ]]; then
-		echo "Previous values: ${file[$(($i - 3))]} ${file[$(($i - 2))]} ${file[$(($i - 1))]}"
+		echo "Previous values: ${files[$(($i - 3))]} ${files[$(($i - 2))]} ${files[$(($i - 1))]}"
 	fi
 
 	##Ask the user if there are any more calculations to be made.
@@ -41,12 +41,12 @@ done
 echo "NUM_ENTRIES: $NUM_ENTRIES"
 #Run all programs in order
 for (( i=0; i<$(($NUM_ENTRIES)); i+=3 )); do
-	script=${file[$i]} #Script to be run in the current iteration
-	in_file=${file[$(($i+1))]} #Input file for current iteration
-	out_file=${file[$(($i+2))]} #Output file for current iteration
+	script=${files[$i]} #Script to be run in the current iteration
+	in_file=${files[$(($i+1))]} #Input file for current iteration
+	out_file=${files[$(($i+2))]} #Output file for current iteration
 	if [[ "$i" -ne 0 ]]; then #If it isn't the first iteration
-		in_file_prev=${file[$(($i - 2))]} #Input file for previous iteration
-		out_file_prev=${file[$(($i - 1))]} #Corresponding output file
+		in_file_prev=${files[$(($i - 2))]} #Input file for previous iteration
+		out_file_prev=${files[$(($i - 1))]} #Corresponding output file
 		##Get the prev in file's calculation parameter to determine if updating the
 		##parameters of the current in file is necessary.
 		calculation=$( python3 get_calculation "$in_file_prev")
@@ -64,7 +64,7 @@ for (( i=0; i<$(($NUM_ENTRIES)); i+=3 )); do
 	if [[ "$calculation" == "relax" || "$calculation" == "vc-relax" ]]; then #If the prev file was optimization
 		#update_parameters
 		echo "Updating parameters"
-		python3 ../update-scf-coords/update_coords.py "$in_file" "$out_file_prev" "$calculation" #Update the parameters
+		python3 ../update-coords/update_coords.py "$in_file" "$out_file_prev" "$calculation" #Update the parameters
 		#Run the script
 		./$script
 	else
