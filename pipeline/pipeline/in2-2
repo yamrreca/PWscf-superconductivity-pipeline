@@ -1,14 +1,14 @@
 &CONTROL
-  calculation  = 'scf',
-  restart_mode = 'from_scratch',
+  calculation = 'relax',
   prefix      = 'MoS2',
+  restart_mode='from_scratch',
   pseudo_dir  = './',
   outdir      = './tmp',
 /
 &SYSTEM
   ibrav=  4,
-  celldm(1)= 2.3,
-  celldm(3)= 4.4,
+  celldm(1) = 5.98166139070
+  celldm(3) = 4.19267496862
   nat       = 3,
   ntyp      = 2,
   ecutwfc   = 65.0,
@@ -27,8 +27,8 @@ ATOMIC_SPECIES
 Mo   95.94   Mo.pz-n-nc.UPF
 S    32.065  S.pz-n-nc.UPF
 ATOMIC_POSITIONS (crystal)
-Mo       0   0.666666660   0.500000000
-S        0.666666660   0.333333330   0.380584378
-S        0.666666660   0.333333330   0.619415622
+Mo       0.333333330   0.666666660   0.500000000
+S        0.666666660   0.333333330   0.380584377
+S        0.666666660   0.333333330   0.619415623
 K_POINTS {automatic}
 40  40  1  0.0  0.0  0.0

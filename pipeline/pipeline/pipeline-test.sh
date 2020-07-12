@@ -64,6 +64,7 @@ for (( i=0; i<$(($NUM_ENTRIES)); i+=3 )); do
 	if [[ "$calculation" == "relax" || "$calculation" == "vc-relax" ]]; then #If the prev file was optimization
 		#update_parameters
 		echo "Updating parameters"
+		python3 ../update-scf-coords/update_coords.py "$in_file" "$out_file_prev" "$calculation" #Update the parameters
 		#Run the script
 		./$script
 	else
